@@ -17,7 +17,7 @@
 
 - name: Symlink install directory
   sudo: True
-  file: src=/opt/apache-tomcat-7.0.61 path=/usr/share/tomcat state=link
+  file: src=/opt/apache-tomcat-7.0.55 path=/usr/share/tomcat state=link
 
 - name: Change ownership of Tomcat installation
   file: path=/usr/share/tomcat/ owner=tomcat group=tomcat state=directory recurse=yes
