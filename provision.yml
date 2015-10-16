@@ -1,0 +1,9 @@
+---
+# This playbook deploys a simple standalone Tomcat 7 server. 
+
+- hosts: tag_NAme_Dev_tomcat
+  gather_facts: yes
+  sudo: yes
+
+  roles:
+    - role: transite
