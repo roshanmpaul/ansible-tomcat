@@ -1,47 +1,36 @@
----
-- name: Install Java 1.7
-  yum: name=java-1.7.0-openjdk state=present
 
-- name: add group "tomcat"
-  group: name=tomcat
-
-- name: add user "tomcat"
-  user: name=tomcat group=tomcat home=/usr/share/tomcat createhome=no
-  sudo: True
-
-- name: Download Tomcat
-  get_url: url=http:https://nexus.kdc.capitalone.com/mother/service/local/repositories/central/content/org/apache/tomcat/tomcat/7.0.55/tomcat-7.0.55.zip dest=/opt/apache-tomcat-7.0.55.zip
-
-- unarchive: src=/opt/apache-tomcat-7.0.55.zip dest=/opt/ copy=no
-  sudo: True
-
-- name: Symlink install directory
-  sudo: True
-  file: src=/opt/apache-tomcat-7.0.55 path=/usr/share/tomcat state=link
-
-- name: Change ownership of Tomcat installation
-  file: path=/usr/share/tomcat/ owner=tomcat group=tomcat state=directory recurse=yes
-  sudo: yes
-  remote_user: ec2-user
-
-- name: Configure Tomcat server
-  template: src=server.xml dest=/usr/share/tomcat/conf/
-  sudo: yes
-  remote_user: ec2-user
-  notify: restart tomcat
-
-- name: Configure Tomcat users
-  template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
-  sudo: yes
-  remote_user: ec2-user
-  notify: restart tomcat
-
-- name: Install Tomcat init script
-  sudo: True
-  copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
-
-- name: Start Tomcat
-  service: name=tomcat state=started enabled=yes
-
-- name: wait for tomcat to start
-  wait_for: port={{http_port}}
+- name create transite directories
+  file:
+    path '{{ item }}'
+    mode 0755
+    state directory
+  with_items:
+  - '{{ transite_home_dir }}'
+  - '{{ msp_cert_dir }}'
+  - '{{ transite_log_dir }}'
+  
+  - name download transite startup
+    get_url:
+      url: '{{ transite_startup_source }}'
+      dest: '{{transite_home_dir }}'/msp_tpw_was_m00.tar.gz'
+      
+    - unarchive src= '{{transite_home_dir }}'/msp_tpw_was_m00.tar.gz' dest=/prod/msp/domains/tpw_domains/qas01 copy=no
+      sudo: True
+      
+      - name: Set Environment variable
+        sudo: True
+        copy: src=setenvnew.sh dest='{{transite_home_dir }}/msp_tpw_was_m00/bin/setenv.sh' mode=0755
+        
+        - shell: '{{transite_home_dir }}/msp_tpw_was_m00/bin/setenv.sh'
+          sudo: yes
+          remote_user: ec2-user
+          
+        - name: Configure Start script
+          sudo: True
+          copy: src=startmsp_tpw_qasnew.sh dest='{{transite_home_dir }}/msp_tpw_was_m00/startmsp_tpw_qas_m00.sh'
+          
+          shell: '{{transite_home_dir }}/msp_tpw_was_m00/startmsp_tpw_was_m00.sh'
+          sudo: yes
+          remote_user: ec2-user
+          
+          
