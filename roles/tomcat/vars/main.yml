@@ -1,0 +1,4 @@
+transite_startup_source: https://s2.amazonaws.com/awsome-team-bucket/staging-services/msp_tpw_qas_m00.tar.gz
+transite_home_dir: /prod/msp/domains/tpw_domains/qas01
+transite_log_dir: /prod/msp/domains/tpw_domains/qas01/msp_tpw_qas_m00/logs
+msp_cert_dir: /prod/msp/mspcert

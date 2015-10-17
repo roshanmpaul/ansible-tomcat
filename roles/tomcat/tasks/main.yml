@@ -29,7 +29,7 @@
           sudo: True
           copy: src=startmsp_tpw_qasnew.sh dest='{{transite_home_dir }}/msp_tpw_was_m00/startmsp_tpw_qas_m00.sh'
           
-          shell: '{{transite_home_dir }}/msp_tpw_was_m00/startmsp_tpw_was_m00.sh'
+          shell: '{{transite_home_dir }}/msp_tpw_was_m00/startmsp_tpw_qas_m00.sh'
           sudo: yes
           remote_user: ec2-user
           
