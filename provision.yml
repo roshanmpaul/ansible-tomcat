@@ -1,5 +1,5 @@
 ---
-# This playbook deploys a simple standalone Tomcat 7 server. 
+# This playbook deploys a transite configuration. 
 
 - hosts: tag_name_Dev_tomcat
   gather_facts: yes
